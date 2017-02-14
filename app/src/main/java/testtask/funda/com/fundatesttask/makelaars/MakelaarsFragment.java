@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -30,6 +29,7 @@ public class MakelaarsFragment extends Fragment implements MakelaarsContract.Vie
 	private MakelaarsAdapter _listAdapter;
 
 	private ProgressBar _loadingIndicator;
+	private TextView _noItemsTextView;
 
 	public MakelaarsFragment() {
 		// Requires empty public constructor
@@ -58,6 +58,8 @@ public class MakelaarsFragment extends Fragment implements MakelaarsContract.Vie
 		// Loading indicator
 		_loadingIndicator = (ProgressBar) root.findViewById(R.id.makelaars_list_loading_indicator);
 
+		_noItemsTextView = (TextView) root.findViewById(R.id.no_makelaars_data_available_text);
+
 		return root;
 	}
 
@@ -75,13 +77,23 @@ public class MakelaarsFragment extends Fragment implements MakelaarsContract.Vie
 	}
 
 	@Override
-	public void setLoadingIndicator(boolean active) {
+	public void setLoadingIndicator(final boolean active) {
 		if (getView() == null) {
 			return;
 		}
 
-		int visibility = active ? View.VISIBLE : View.GONE;
-		_loadingIndicator.setVisibility(visibility);
+		getView().post(new Runnable() {
+			@Override
+			public void run() {
+				int visibility = active ? View.VISIBLE : View.GONE;
+				_loadingIndicator.setVisibility(visibility);
+			}
+		});
+	}
+
+	@Override
+	public void setLoadingProgress(int progress) {
+
 	}
 
 	@Override
@@ -96,11 +108,12 @@ public class MakelaarsFragment extends Fragment implements MakelaarsContract.Vie
 
 	@Override
 	public void showNoRealEstateAgents() {
-
+		_noItemsTextView.setVisibility(View.VISIBLE);
 	}
 
 	@Override
 	public void showTopAgents(List<RealEstateAgent> topAgentsToShow) {
+		_noItemsTextView.setVisibility(View.GONE);
 		_listAdapter.replaceData(topAgentsToShow);
 	}
 

@@ -1,4 +1,4 @@
-package testtask.funda.com.fundatesttask.communication;
+package testtask.funda.com.fundatesttask.data.source.remote;
 
 import okhttp3.HttpUrl;
 import okhttp3.Request;

@@ -10,10 +10,10 @@ public class MakelaarsRepository implements MakelaarsDataSource {
 
 	private static MakelaarsRepository _instance = null;
 
-	private final MakelaarsDataSource _makelaarsRemoteDataSource;
+	private final MakelaarsDataSource _makelaarsDataSource;
 
 	private MakelaarsRepository(@NonNull MakelaarsDataSource makelaarsRemoteDataSource) {
-		_makelaarsRemoteDataSource = makelaarsRemoteDataSource;
+		_makelaarsDataSource = makelaarsRemoteDataSource;
 	}
 
 	public static MakelaarsRepository getInstance(MakelaarsDataSource makelaarsRemoteDataSource) {
@@ -25,6 +25,6 @@ public class MakelaarsRepository implements MakelaarsDataSource {
 
 	@Override
 	public void loadObjectsForSale(@NonNull LoadObjectsForSaleCallback callback) {
-		_makelaarsRemoteDataSource.loadObjectsForSale(callback);
+		_makelaarsDataSource.loadObjectsForSale(callback);
 	}
 }

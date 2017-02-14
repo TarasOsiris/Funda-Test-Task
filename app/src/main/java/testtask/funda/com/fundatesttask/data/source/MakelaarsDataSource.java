@@ -13,7 +13,9 @@ public interface MakelaarsDataSource {
 	interface LoadObjectsForSaleCallback {
 		void onObjectsLoaded(List<ObjectForSale> objectForSale);
 
-		void onDataNotAvailable();
+		void onProgressChanged(int progress);
+
+		void onError();
 	}
 
 	void loadObjectsForSale(@NonNull LoadObjectsForSaleCallback callback);

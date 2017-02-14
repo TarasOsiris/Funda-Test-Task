@@ -66,7 +66,12 @@ class MakelaarsPresenter implements MakelaarsContract.Presenter {
 			}
 
 			@Override
-			public void onDataNotAvailable() {
+			public void onProgressChanged(int progress) {
+				_makelaarsView.setLoadingProgress(progress);
+			}
+
+			@Override
+			public void onError() {
 				// The view may not be able to handle UI updates anymore
 				if (!_makelaarsView.isActive()) {
 					return;

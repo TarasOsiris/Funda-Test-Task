@@ -21,6 +21,8 @@ public interface MakelaarsContract {
 		void showNoRealEstateAgents();
 
 		void showTopAgents(List<RealEstateAgent> topAgentsToShow);
+
+		void setLoadingProgress(int progress);
 	}
 
 	interface Presenter extends BasePresenter {

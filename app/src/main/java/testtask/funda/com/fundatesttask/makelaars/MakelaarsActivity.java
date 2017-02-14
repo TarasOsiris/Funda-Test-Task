@@ -19,7 +19,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 import testtask.funda.com.fundatesttask.Injection;
 import testtask.funda.com.fundatesttask.R;
-import testtask.funda.com.fundatesttask.communication.FundaApiRequestBuilder;
+import testtask.funda.com.fundatesttask.data.source.remote.FundaApiRequestBuilder;
 import testtask.funda.com.fundatesttask.data.model.ObjectForSale;
 import testtask.funda.com.fundatesttask.data.model.QueryResponse;
 import testtask.funda.com.fundatesttask.utils.ActivityUtils;
@@ -27,10 +27,6 @@ import testtask.funda.com.fundatesttask.utils.ActivityUtils;
 import java.io.IOException;
 
 public class MakelaarsActivity extends AppCompatActivity {
-
-	private static final String TAG = AppCompatActivity.class.getSimpleName();
-
-	OkHttpClient _client = new OkHttpClient();
 
 	private DrawerLayout _drawerLayout;
 
@@ -91,38 +87,5 @@ public class MakelaarsActivity extends AppCompatActivity {
 		});
 	}
 
-	void run() throws IOException {
-		Request request = getAmsterdamGardensRequest();
 
-		_client.newCall(request).enqueue(new Callback() {
-			@Override
-			public void onFailure(Call call, IOException e) {
-				Log.e(TAG, "Failed");
-			}
-
-			@Override
-			public void onResponse(Call call, Response response) throws IOException {
-				if (!response.isSuccessful()) {
-					throw new IOException("Unexpected code " + response);
-				} else {
-					String json = response.body().string();
-
-					GsonBuilder gsonBuilder = new GsonBuilder();
-					gsonBuilder.registerTypeAdapter(ObjectForSale.class, new ObjectForSale.ObjectForSaleDeserializer());
-					Gson gson = gsonBuilder.create();
-
-					QueryResponse queryResponse = gson.fromJson(json, QueryResponse.class);
-					Log.d(TAG, queryResponse.toString());
-				}
-			}
-		});
-	}
-
-	private Request getAmsterdamGardensRequest() {
-		return new FundaApiRequestBuilder()
-				.type(FundaApiRequestBuilder.TYPE_BUY)
-				.searchQuery("/amsterdam/tuin/")
-				.page(1)
-				.pageSize(25).build();
-	}
 }
