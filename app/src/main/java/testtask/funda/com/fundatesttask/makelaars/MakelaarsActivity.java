@@ -17,6 +17,7 @@ import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import testtask.funda.com.fundatesttask.Injection;
 import testtask.funda.com.fundatesttask.R;
 import testtask.funda.com.fundatesttask.communication.FundaApiRequestBuilder;
 import testtask.funda.com.fundatesttask.data.model.ObjectForSale;
@@ -56,9 +57,13 @@ public class MakelaarsActivity extends AppCompatActivity {
 			setupDrawerContent(navigationView);
 		}
 
-		// Create the presenter
-//		_makelaarsPresenter = new MakelaarsPresenter();
+		// Create view (fragment that displays list)
+		MakelaarsFragment tasksFragment =
+				(MakelaarsFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);
 
+		// Create the presenter
+		_makelaarsPresenter = new MakelaarsPresenter(Injection.provideMakelaarsRepository(getApplicationContext()),
+				null); // TODO Fragment
 	}
 
 	@Override

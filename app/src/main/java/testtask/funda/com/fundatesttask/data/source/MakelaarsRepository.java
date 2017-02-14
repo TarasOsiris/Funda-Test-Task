@@ -7,6 +7,22 @@ import android.support.annotation.NonNull;
  */
 
 public class MakelaarsRepository implements MakelaarsDataSource {
+
+	private static MakelaarsRepository _instance = null;
+
+	private final MakelaarsDataSource _makelaarsRemoteDataSource;
+
+	private MakelaarsRepository(@NonNull MakelaarsDataSource makelaarsRemoteDataSource) {
+		_makelaarsRemoteDataSource = makelaarsRemoteDataSource;
+	}
+
+	public static MakelaarsRepository getInstance(MakelaarsDataSource makelaarsRemoteDataSource) {
+		if (_instance == null) {
+			_instance = new MakelaarsRepository(makelaarsRemoteDataSource);
+		}
+		return _instance;
+	}
+
 	@Override
 	public void loadObjectsForSale(@NonNull LoadObjectsForSaleCallback callback) {
 

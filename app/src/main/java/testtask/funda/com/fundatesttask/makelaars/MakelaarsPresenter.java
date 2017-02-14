@@ -15,17 +15,22 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Created by tarasleskiv on 14/02/2017.
  */
 
-public class MakelaarsPresenter implements MakelaarsContract.Presenter {
+class MakelaarsPresenter implements MakelaarsContract.Presenter {
 
 	private final MakelaarsRepository _makelaarsRepository;
 
 	private final MakelaarsContract.View _makelaarsView;
 
-	public MakelaarsPresenter(@NonNull MakelaarsRepository makelaarsRepository, @NonNull MakelaarsContract.View makelaarsView) {
+	MakelaarsPresenter(@NonNull MakelaarsRepository makelaarsRepository, @NonNull MakelaarsContract.View makelaarsView) {
 		_makelaarsRepository = checkNotNull(makelaarsRepository, "makelaarsRepository can't be null");
 		_makelaarsView = checkNotNull(makelaarsView, "_makelaarsView cannot be null");
 
 		makelaarsView.setPresenter(this);
+	}
+
+	@Override
+	public void start() {
+		loadTopRealEstateAgents();
 	}
 
 	@Override
@@ -77,10 +82,5 @@ public class MakelaarsPresenter implements MakelaarsContract.Presenter {
 		} else {
 			_makelaarsView.showTopAgents(topAgentsToShow);
 		}
-	}
-
-	@Override
-	public void start() {
-		loadTopRealEstateAgents();
 	}
 }
