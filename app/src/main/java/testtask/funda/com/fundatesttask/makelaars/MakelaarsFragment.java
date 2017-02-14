@@ -86,7 +86,7 @@ public class MakelaarsFragment extends Fragment implements MakelaarsContract.Vie
 
 	@Override
 	public void showLoadingSalesAgentsError() {
-
+		// TODO Show error
 	}
 
 	@Override

@@ -40,6 +40,7 @@ public class FakeMakelaarsDataSource implements MakelaarsDataSource {
 		handler.postDelayed(new Runnable() {
 			@Override
 			public void run() {
+				// Read the data from local file for test purposes not to spam server with requests for testing
 				String json = TextUtils.readRawTextFile(_context, R.raw.mock_reponse);
 				QueryResponse response = GsonUtils.createGson().fromJson(json, QueryResponse.class);
 				callback.onObjectsLoaded(response.getObjectsForSale());
