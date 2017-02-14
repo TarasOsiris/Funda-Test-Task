@@ -1,4 +1,4 @@
-package testtask.funda.com.fundatesttask.model;
+package testtask.funda.com.fundatesttask.data.model;
 
 /**
  * Created by tarasleskiv on 14/02/2017.

@@ -1,4 +1,4 @@
-package testtask.funda.com.fundatesttask.model;
+package testtask.funda.com.fundatesttask.data.model;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
@@ -14,10 +14,15 @@ import java.lang.reflect.Type;
 
 public class ObjectForSale {
 
+	// Real estate agent that is selling this object
 	private final RealEstateAgent _realEstateAgent;
 
 	public ObjectForSale(RealEstateAgent agent) {
 		_realEstateAgent = agent;
+	}
+
+	public RealEstateAgent getRealEstateAgent() {
+		return _realEstateAgent;
 	}
 
 	public static class ObjectForSaleDeserializer implements JsonDeserializer<ObjectForSale> {

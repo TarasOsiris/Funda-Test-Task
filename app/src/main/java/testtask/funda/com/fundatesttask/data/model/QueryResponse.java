@@ -1,4 +1,4 @@
-package testtask.funda.com.fundatesttask.model;
+package testtask.funda.com.fundatesttask.data.model;
 
 import com.google.gson.annotations.SerializedName;
 

@@ -2,7 +2,7 @@ package testtask.funda.com.fundatesttask.makelaars;
 
 import testtask.funda.com.fundatesttask.BasePresenter;
 import testtask.funda.com.fundatesttask.BaseView;
-import testtask.funda.com.fundatesttask.model.RealEstateAgent;
+import testtask.funda.com.fundatesttask.data.model.RealEstateAgent;
 
 import java.util.List;
 
@@ -14,7 +14,15 @@ public interface MakelaarsContract {
 	interface View extends BaseView<Presenter> {
 		void setLoadingIndicator(boolean active);
 
-		void showRealEstateAgentsList(List<RealEstateAgent> realEstateAgents);
+		void showLoadingUi();
+
+		void showLoadingSalesAgentsError();
+
+		boolean isActive();
+
+		void showNoRealEstateAgents();
+
+		void showTopAgents(List<RealEstateAgent> topAgentsToShow);
 	}
 
 	interface Presenter extends BasePresenter {
