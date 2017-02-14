@@ -23,7 +23,7 @@ class MakelaarsPresenter implements MakelaarsContract.Presenter {
 
 	MakelaarsPresenter(@NonNull MakelaarsRepository makelaarsRepository, @NonNull MakelaarsContract.View makelaarsView) {
 		_makelaarsRepository = checkNotNull(makelaarsRepository, "makelaarsRepository can't be null");
-		_makelaarsView = checkNotNull(makelaarsView, "_makelaarsView cannot be null");
+		_makelaarsView = checkNotNull(makelaarsView, "makelaarsView cannot be null");
 
 		makelaarsView.setPresenter(this);
 	}
@@ -40,16 +40,17 @@ class MakelaarsPresenter implements MakelaarsContract.Presenter {
 
 	private void loadRealEstateAgents(final boolean showLoadingUi) {
 		if (showLoadingUi) {
-			_makelaarsView.showLoadingUi();
+			_makelaarsView.setLoadingIndicator(true);
 		}
 
 		_makelaarsRepository.loadObjectsForSale(new MakelaarsDataSource.LoadObjectsForSaleCallback() {
 			@Override
 			public void onObjectsLoaded(List<ObjectForSale> objectsForSale) {
-				List<RealEstateAgent> topAgentsToShow = new ArrayList<RealEstateAgent>();
+				List<RealEstateAgent> topAgentsToShow = new ArrayList<>();
 
 				for (ObjectForSale objectForSale : objectsForSale) {
 					// TODO Filter and get top agents
+					topAgentsToShow.add(objectForSale.getRealEstateAgent());
 				}
 
 				// The view may not be able to handle UI updates anymore

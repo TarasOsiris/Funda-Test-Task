@@ -14,8 +14,6 @@ public interface MakelaarsContract {
 	interface View extends BaseView<Presenter> {
 		void setLoadingIndicator(boolean active);
 
-		void showLoadingUi();
-
 		void showLoadingSalesAgentsError();
 
 		boolean isActive();

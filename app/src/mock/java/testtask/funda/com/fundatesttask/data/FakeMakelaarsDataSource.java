@@ -1,7 +1,9 @@
 package testtask.funda.com.fundatesttask.data;
 
 import android.content.Context;
+import android.os.Handler;
 import android.support.annotation.NonNull;
+import com.google.common.collect.Lists;
 import testtask.funda.com.fundatesttask.R;
 import testtask.funda.com.fundatesttask.data.model.QueryResponse;
 import testtask.funda.com.fundatesttask.data.source.MakelaarsDataSource;
@@ -13,6 +15,8 @@ import testtask.funda.com.fundatesttask.utils.TextUtils;
  */
 
 public class FakeMakelaarsDataSource implements MakelaarsDataSource {
+
+	private static final long SERVICE_LATENCY_IN_MILLIS = 5000;
 
 	private static FakeMakelaarsDataSource INSTANCE;
 
@@ -30,9 +34,16 @@ public class FakeMakelaarsDataSource implements MakelaarsDataSource {
 	}
 
 	@Override
-	public void loadObjectsForSale(@NonNull LoadObjectsForSaleCallback callback) {
-		String json = TextUtils.readRawTextFile(_context, R.raw.mock_reponse);
-		QueryResponse response = GsonUtils.createGson().fromJson(json, QueryResponse.class);
-		callback.onObjectsLoaded(response.getObjectsForSale());
+	public void loadObjectsForSale(@NonNull final LoadObjectsForSaleCallback callback) {
+		// Simulate network by delaying the execution.
+		Handler handler = new Handler();
+		handler.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				String json = TextUtils.readRawTextFile(_context, R.raw.mock_reponse);
+				QueryResponse response = GsonUtils.createGson().fromJson(json, QueryResponse.class);
+				callback.onObjectsLoaded(response.getObjectsForSale());
+			}
+		}, SERVICE_LATENCY_IN_MILLIS);
 	}
 }

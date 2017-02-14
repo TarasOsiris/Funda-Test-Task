@@ -22,6 +22,7 @@ import testtask.funda.com.fundatesttask.R;
 import testtask.funda.com.fundatesttask.communication.FundaApiRequestBuilder;
 import testtask.funda.com.fundatesttask.data.model.ObjectForSale;
 import testtask.funda.com.fundatesttask.data.model.QueryResponse;
+import testtask.funda.com.fundatesttask.utils.ActivityUtils;
 
 import java.io.IOException;
 
@@ -58,12 +59,16 @@ public class MakelaarsActivity extends AppCompatActivity {
 		}
 
 		// Create view (fragment that displays list)
-		MakelaarsFragment tasksFragment =
+		MakelaarsFragment makelaarsFragment =
 				(MakelaarsFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);
+		if (makelaarsFragment == null) {
+			makelaarsFragment = MakelaarsFragment.newInstance();
+			ActivityUtils.addFragmentToActivity(getSupportFragmentManager(), makelaarsFragment, R.id.contentFrame);
+		}
 
 		// Create the presenter
 		_makelaarsPresenter = new MakelaarsPresenter(Injection.provideMakelaarsRepository(getApplicationContext()),
-				null); // TODO Fragment
+				makelaarsFragment);
 	}
 
 	@Override
