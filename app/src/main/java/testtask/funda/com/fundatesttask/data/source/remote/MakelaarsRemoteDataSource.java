@@ -41,12 +41,12 @@ public class MakelaarsRemoteDataSource implements MakelaarsDataSource {
 	}
 
 	@Override
-	public void loadObjectsForSale(@NonNull final LoadObjectsForSaleCallback callback) {
+	public void loadObjectsForSale(final String location, final boolean hasYard, @NonNull final LoadObjectsForSaleCallback callback) {
 		// This list accumulates all the objects for sale obtained via interval pagination requests
 		final List<ObjectForSale> result = new ArrayList<>();
 
 		// Load the first page to get the information about paging
-		Request initialRequest = getAmsterdamGardensRequest(INITIAL_PAGE_NUMBER);
+		Request initialRequest = getRequest(location, hasYard, INITIAL_PAGE_NUMBER);
 		_client.newCall(initialRequest).enqueue(new Callback() {
 			@Override
 			public void onFailure(Call call, IOException e) {
@@ -61,11 +61,12 @@ public class MakelaarsRemoteDataSource implements MakelaarsDataSource {
 				} else {
 					final FundaApiQueryResponse initialResponseParsed = GsonUtils.parseResponse(initialResponse.body().string());
 					PagingInfo pagingInfo = initialResponseParsed.getPagingInfo();
-					final int pageCount = pagingInfo.getTotalPages();
 
+					// Accumulate object from initial request
 					result.addAll(initialResponseParsed.getObjectsForSale());
 
-					accumulateObjectsForSale(pageCount, pagingInfo, callback, result);
+					// Passing params like this does not look very nice but for the sake of simplicity left like this
+					accumulateObjectsForSale(location, hasYard, pagingInfo, callback, result);
 
 					// All objects are retrieved
 					callback.onObjectsLoaded(result);
@@ -74,10 +75,11 @@ public class MakelaarsRemoteDataSource implements MakelaarsDataSource {
 		});
 	}
 
-	private void accumulateObjectsForSale(int totalPageCount, PagingInfo firstPageInfo,
+	private void accumulateObjectsForSale(String location, boolean hasYard, PagingInfo firstPageInfo,
 										  @NonNull LoadObjectsForSaleCallback callback,
 										  List<ObjectForSale> accumulatedObjectsForSale) throws IOException {
 
+		int totalPageCount = firstPageInfo.getTotalPages();
 		PagingInfo currentPageInfo = firstPageInfo;
 
 		while (currentPageInfo.getNextUrl() != null) {
@@ -91,7 +93,7 @@ public class MakelaarsRemoteDataSource implements MakelaarsDataSource {
 
 			// Call the API for the next page
 			int nextPage = currentPageInfo.getCurrentPageNumber() + 1;
-			Response response = _client.newCall(getAmsterdamGardensRequest(nextPage)).execute();
+			Response response = _client.newCall(getRequest(location, hasYard, nextPage)).execute();
 			if (!response.isSuccessful()) {
 				Log.e(TAG, "Unexpected code " + response);
 				callback.onError();
@@ -108,11 +110,16 @@ public class MakelaarsRemoteDataSource implements MakelaarsDataSource {
 		}
 	}
 
-	private Request getAmsterdamGardensRequest(int page) {
-		return new FundaApiRequestBuilder()
+	private Request getRequest(String location, boolean hasYard, int page) {
+		String searchQuery = "/" + location;
+		if (hasYard) {
+			searchQuery += "/tuin/";
+		}
+		FundaApiRequestBuilder requestBuilder = new FundaApiRequestBuilder()
 				.type(FundaApiRequestBuilder.TYPE_BUY)
-				.searchQuery("/amsterdam/tuin/")
+				.searchQuery(searchQuery)
 				.page(page)
-				.pageSize(25).build();
+				.pageSize(25);
+		return requestBuilder.build();
 	}
 }

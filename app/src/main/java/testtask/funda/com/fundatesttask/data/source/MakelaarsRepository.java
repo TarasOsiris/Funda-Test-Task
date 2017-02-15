@@ -24,7 +24,7 @@ public class MakelaarsRepository implements MakelaarsDataSource {
 	}
 
 	@Override
-	public void loadObjectsForSale(@NonNull LoadObjectsForSaleCallback callback) {
-		_makelaarsDataSource.loadObjectsForSale(callback);
+	public void loadObjectsForSale(String location, boolean hasYard, @NonNull LoadObjectsForSaleCallback callback) {
+		_makelaarsDataSource.loadObjectsForSale(location, hasYard, callback);
 	}
 }

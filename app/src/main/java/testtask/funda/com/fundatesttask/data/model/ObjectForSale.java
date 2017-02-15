@@ -26,13 +26,18 @@ public class ObjectForSale {
 	}
 
 	public static class ObjectForSaleDeserializer implements JsonDeserializer<ObjectForSale> {
+
+		private static final String MAKELAAR_ID = "MakelaarId";
+
+		private static final String MAKELAAR_NAAM = "MakelaarNaam";
+
 		@Override
 		public ObjectForSale deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
 
 			JsonObject jobject = (JsonObject) json;
 
-			int id = jobject.get("MakelaarId").getAsInt();
-			String name = jobject.get("MakelaarNaam").getAsString();
+			int id = jobject.get(MAKELAAR_ID).getAsInt();
+			String name = jobject.get(MAKELAAR_NAAM).isJsonNull() ? "[NO NAME]" : jobject.get(MAKELAAR_NAAM).getAsString();
 
 			RealEstateAgent agent = new RealEstateAgent(id, name);
 			return new ObjectForSale(agent);

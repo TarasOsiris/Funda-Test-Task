@@ -17,7 +17,7 @@ public class FundaApiRequestBuilder {
 	private Request.Builder _requestBuilder;
 	private HttpUrl.Builder _urlBuilder;
 
-	public FundaApiRequestBuilder() {
+	FundaApiRequestBuilder() {
 		_requestBuilder = new Request.Builder();
 		_urlBuilder = new HttpUrl.Builder()
 				.scheme("http")
@@ -32,22 +32,22 @@ public class FundaApiRequestBuilder {
 		return this;
 	}
 
-	public FundaApiRequestBuilder searchQuery(String query) {
+	FundaApiRequestBuilder searchQuery(String query) {
 		_urlBuilder.addQueryParameter("zo", query);
 		return this;
 	}
 
-	public FundaApiRequestBuilder page(int page) {
+	FundaApiRequestBuilder page(int page) {
 		_urlBuilder.addQueryParameter("page", Integer.toString(page));
 		return this;
 	}
 
-	public FundaApiRequestBuilder pageSize(int pageSize) {
+	FundaApiRequestBuilder pageSize(int pageSize) {
 		_urlBuilder.addQueryParameter("pageSize", Integer.toString(pageSize));
 		return this;
 	}
 
-	public Request build() {
+	Request build() {
 		_requestBuilder.url(_urlBuilder.build());
 		return _requestBuilder.build();
 	}

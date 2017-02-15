@@ -13,7 +13,7 @@ import java.util.List;
 
 public interface MakelaarsContract {
 	interface View extends BaseView<Presenter> {
-		void setLoadingIndicator(boolean active);
+		void setLoadingProgressBar(boolean active);
 
 		void showLoadingSalesAgentsError();
 
@@ -28,6 +28,6 @@ public interface MakelaarsContract {
 
 	interface Presenter extends BasePresenter {
 		// Determine which makelaar's in Amsterdam have the most object listed for sale. Make a table of the top 10.
-		void loadTopRealEstateAgents();
+		void loadTopRealEstateAgents(String city, boolean hasYard);
 	}
 }

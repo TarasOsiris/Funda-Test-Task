@@ -1,3 +1,5 @@
 <resources>
 	<string name="app_name">FundaTestTask</string>
+	<string name="amsterdam_objects">Amsterdam Objects</string>
+	<string name="amsterdam_objects_with_yard">Amsterdam Objects with Yard</string>
 </resources>

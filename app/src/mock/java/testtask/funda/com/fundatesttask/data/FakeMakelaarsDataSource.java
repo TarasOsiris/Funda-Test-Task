@@ -33,7 +33,7 @@ public class FakeMakelaarsDataSource implements MakelaarsDataSource {
 	}
 
 	@Override
-	public void loadObjectsForSale(@NonNull final LoadObjectsForSaleCallback callback) {
+	public void loadObjectsForSale(String location, boolean hasYard, @NonNull final LoadObjectsForSaleCallback callback) {
 		// Simulate network by delaying the execution.
 		Handler handler = new Handler();
 		handler.postDelayed(new Runnable() {

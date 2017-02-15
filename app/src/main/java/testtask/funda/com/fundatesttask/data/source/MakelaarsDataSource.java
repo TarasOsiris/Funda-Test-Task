@@ -18,5 +18,5 @@ public interface MakelaarsDataSource {
 		void onError();
 	}
 
-	void loadObjectsForSale(@NonNull LoadObjectsForSaleCallback callback);
+	void loadObjectsForSale(String location, boolean hasYard, @NonNull LoadObjectsForSaleCallback callback);
 }

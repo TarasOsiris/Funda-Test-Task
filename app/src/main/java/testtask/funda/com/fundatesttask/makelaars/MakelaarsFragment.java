@@ -8,11 +8,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import testtask.funda.com.fundatesttask.R;
-import testtask.funda.com.fundatesttask.data.model.RealEstateAgent;
 import testtask.funda.com.fundatesttask.data.model.RealEstateAgentListViewModel;
 
 import java.util.ArrayList;
@@ -30,7 +30,10 @@ public class MakelaarsFragment extends Fragment implements MakelaarsContract.Vie
 
 	private MakelaarsAdapter _listAdapter;
 
-	private ProgressBar _loadingIndicator;
+	private LinearLayout _progressLayout;
+	private ProgressBar _loadingProgressBar;
+	private TextView _loadingText;
+
 	private TextView _noItemsTextView;
 
 	public MakelaarsFragment() {
@@ -58,7 +61,9 @@ public class MakelaarsFragment extends Fragment implements MakelaarsContract.Vie
 		listView.setAdapter(_listAdapter);
 
 		// Loading indicator
-		_loadingIndicator = (ProgressBar) root.findViewById(R.id.makelaars_list_loading_indicator);
+		_progressLayout = (LinearLayout) root.findViewById(R.id.loading_progress_layout);
+		_loadingProgressBar = (ProgressBar) root.findViewById(R.id.makelaars_list_loading_indicator);
+		_loadingText = (TextView) root.findViewById(R.id.loading_text);
 
 		_noItemsTextView = (TextView) root.findViewById(R.id.no_makelaars_data_available_text);
 
@@ -78,8 +83,7 @@ public class MakelaarsFragment extends Fragment implements MakelaarsContract.Vie
 		_presenter = checkNotNull(presenter);
 	}
 
-	@Override
-	public void setLoadingIndicator(final boolean active) {
+	public void setLoadingProgressBar(final boolean active) {
 		if (getView() == null) {
 			return;
 		}
@@ -88,7 +92,7 @@ public class MakelaarsFragment extends Fragment implements MakelaarsContract.Vie
 			@Override
 			public void run() {
 				int visibility = active ? View.VISIBLE : View.GONE;
-				_loadingIndicator.setVisibility(visibility);
+				_progressLayout.setVisibility(visibility);
 			}
 		});
 	}
@@ -102,8 +106,9 @@ public class MakelaarsFragment extends Fragment implements MakelaarsContract.Vie
 		getView().post(new Runnable() {
 			@Override
 			public void run() {
-				_loadingIndicator.setMax(total);
-				_loadingIndicator.setProgress(current);
+				_loadingProgressBar.setMax(total);
+				_loadingProgressBar.setProgress(current);
+				_loadingText.setText(String.format("Processing page %d of %d", current, total));
 			}
 		});
 	}
@@ -121,12 +126,22 @@ public class MakelaarsFragment extends Fragment implements MakelaarsContract.Vie
 	@Override
 	public void showNoRealEstateAgents() {
 		_noItemsTextView.setVisibility(View.VISIBLE);
+		Snackbar.make(getView(), "Choose menu items from the drawers", Snackbar.LENGTH_LONG).show();
 	}
 
 	@Override
-	public void showTopAgents(List<RealEstateAgentListViewModel> topAgentsToShow) {
-		_noItemsTextView.setVisibility(View.GONE);
-		_listAdapter.replaceData(topAgentsToShow);
+	public void showTopAgents(final List<RealEstateAgentListViewModel> topAgentsToShow) {
+		if (getView() == null) {
+			return;
+		}
+
+		getView().post(new Runnable() {
+			@Override
+			public void run() {
+				_noItemsTextView.setVisibility(View.GONE);
+				_listAdapter.replaceData(topAgentsToShow);
+			}
+		});
 	}
 
 	// endregion
@@ -175,7 +190,7 @@ public class MakelaarsFragment extends Fragment implements MakelaarsContract.Vie
 			RealEstateAgentListViewModel agent = getItem(i);
 
 			TextView titleTV = (TextView) rowView.findViewById(R.id.title);
-			titleTV.setText(agent.getAgent().getRealEstateAgentName());
+			titleTV.setText(agent.getAgent().getRealEstateAgentName() + " (" + agent.getNumberOfObjectsOwned() + ")");
 
 			return rowView;
 		}

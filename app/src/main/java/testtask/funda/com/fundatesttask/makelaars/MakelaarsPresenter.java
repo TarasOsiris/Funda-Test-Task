@@ -2,17 +2,14 @@ package testtask.funda.com.fundatesttask.makelaars;
 
 import android.support.annotation.NonNull;
 import testtask.funda.com.fundatesttask.data.model.ObjectForSale;
-import testtask.funda.com.fundatesttask.data.model.RealEstateAgent;
 import testtask.funda.com.fundatesttask.data.model.RealEstateAgentListViewModel;
 import testtask.funda.com.fundatesttask.data.source.MakelaarsDataSource;
 import testtask.funda.com.fundatesttask.data.source.MakelaarsRepository;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -37,20 +34,21 @@ class MakelaarsPresenter implements MakelaarsContract.Presenter {
 
 	@Override
 	public void start() {
-		loadTopRealEstateAgents();
+		_makelaarsView.showNoRealEstateAgents();
 	}
 
 	@Override
-	public void loadTopRealEstateAgents() {
-		loadRealEstateAgents(true);
+	public void loadTopRealEstateAgents(String city, boolean hasYard) {
+		checkNotNull(city);
+		loadRealEstateAgents(city, hasYard, true);
 	}
 
-	private void loadRealEstateAgents(final boolean showLoadingUi) {
+	private void loadRealEstateAgents(String city, boolean hasYard, final boolean showLoadingUi) {
 		if (showLoadingUi) {
-			_makelaarsView.setLoadingIndicator(true);
+			_makelaarsView.setLoadingProgressBar(true);
 		}
 
-		_makelaarsRepository.loadObjectsForSale(new MakelaarsDataSource.LoadObjectsForSaleCallback() {
+		_makelaarsRepository.loadObjectsForSale(city, hasYard, new MakelaarsDataSource.LoadObjectsForSaleCallback() {
 			@Override
 			public void onObjectsLoaded(List<ObjectForSale> objectsForSale) {
 				// The view may not be able to handle UI updates anymore
@@ -59,7 +57,7 @@ class MakelaarsPresenter implements MakelaarsContract.Presenter {
 				}
 
 				if (showLoadingUi) {
-					_makelaarsView.setLoadingIndicator(false);
+					_makelaarsView.setLoadingProgressBar(false);
 				}
 
 				List<RealEstateAgentListViewModel> topAgents = calculateTopAgents(objectsForSale);
@@ -103,16 +101,22 @@ class MakelaarsPresenter implements MakelaarsContract.Presenter {
 
 		List<RealEstateAgentListViewModel> topAgents = new ArrayList<>();
 		topAgents.addAll(objectNumbersByMakelaarId.values());
+		sort(topAgents);
 
-		// Sort the list of agents
+		// Return only first 10 as in assignment
+		final int numberToDisplay = 10;
+		return topAgents.subList(0, Math.min(topAgents.size(), numberToDisplay));
+	}
+
+	private void sort(List<RealEstateAgentListViewModel> topAgents) {
+		// Sort the list of agents and reverse to get descending
 		Collections.sort(topAgents, new Comparator<RealEstateAgentListViewModel>() {
 			@Override
 			public int compare(RealEstateAgentListViewModel o1, RealEstateAgentListViewModel o2) {
 				return o1.getNumberOfObjectsOwned().compareTo(o2.getNumberOfObjectsOwned());
 			}
 		});
-
-		return topAgents;
+		Collections.reverse(topAgents);
 	}
 
 	private void processTopAgents(List<RealEstateAgentListViewModel> topAgentsToShow) {

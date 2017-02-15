@@ -15,6 +15,8 @@ import testtask.funda.com.fundatesttask.utils.ActivityUtils;
 
 public class MakelaarsActivity extends AppCompatActivity {
 
+	public static final String LOCATION_AMSTERDAM = "amsterdam";
+
 	private DrawerLayout _drawerLayout;
 
 	private MakelaarsPresenter _makelaarsPresenter;
@@ -69,6 +71,21 @@ public class MakelaarsActivity extends AppCompatActivity {
 		navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
 			@Override
 			public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+				switch (item.getItemId()) {
+					case R.id.amsterdam_objects_navigation_menu_item:
+						// For better readability search query could have been moved to its own object,
+						// but since we have so little search params here its left like this
+						_makelaarsPresenter.loadTopRealEstateAgents(LOCATION_AMSTERDAM, false);
+						break;
+					case R.id.amsterdam_objects_with_yard_navigation_menu_item:
+						_makelaarsPresenter.loadTopRealEstateAgents(LOCATION_AMSTERDAM, true);
+						break;
+					default:
+						break;
+				}
+				// Close the navigation drawer when an item is selected.
+				item.setChecked(true);
+				_drawerLayout.closeDrawers();
 				return true;
 			}
 		});
