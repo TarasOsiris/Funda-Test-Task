@@ -115,6 +115,10 @@ public class MakelaarsFragment extends Fragment implements MakelaarsContract.Vie
 
 	@Override
 	public void showLoadingSalesAgentsError() {
+		if (getView() == null) {
+			return;
+		}
+
 		Snackbar.make(getView(), "Failed loading data", Snackbar.LENGTH_LONG).show();
 	}
 
@@ -125,6 +129,10 @@ public class MakelaarsFragment extends Fragment implements MakelaarsContract.Vie
 
 	@Override
 	public void showNoRealEstateAgents() {
+		if (getView() == null) {
+			return;
+		}
+
 		_noItemsTextView.setVisibility(View.VISIBLE);
 		Snackbar.make(getView(), "Choose menu items from the drawers", Snackbar.LENGTH_LONG).show();
 	}
