@@ -8,7 +8,7 @@ import java.util.List;
  * Created by tarasleskiv on 14/02/2017.
  */
 
-public class QueryResponse {
+public class FundaApiQueryResponse {
 
 	@SerializedName("Objects")
 	private List<ObjectForSale> _objectsForSale;
@@ -19,7 +19,7 @@ public class QueryResponse {
 	@SerializedName("TotaalAantalObjecten")
 	private int _totalObjectsForSale;
 
-	private QueryResponse() {
+	private FundaApiQueryResponse() {
 	}
 
 	public List<ObjectForSale> getObjectsForSale() {

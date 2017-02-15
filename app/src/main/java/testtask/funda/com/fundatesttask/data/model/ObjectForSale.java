@@ -17,7 +17,7 @@ public class ObjectForSale {
 	// Real estate agent that is selling this object
 	private final RealEstateAgent _realEstateAgent;
 
-	public ObjectForSale(RealEstateAgent agent) {
+	private ObjectForSale(RealEstateAgent agent) {
 		_realEstateAgent = agent;
 	}
 

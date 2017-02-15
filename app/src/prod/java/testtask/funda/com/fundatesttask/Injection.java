@@ -13,6 +13,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class Injection {
 	public static MakelaarsRepository provideMakelaarsRepository(Context applicationContext) {
 		checkNotNull(applicationContext);
-		return MakelaarsRepository.getInstance(MakelaarsRemoteDataSource.getInstance(applicationContext));
+		return MakelaarsRepository.getInstance(MakelaarsRemoteDataSource.getInstance());
 	}
 }

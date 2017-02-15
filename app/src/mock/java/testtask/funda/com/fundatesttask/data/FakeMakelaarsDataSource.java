@@ -3,9 +3,8 @@ package testtask.funda.com.fundatesttask.data;
 import android.content.Context;
 import android.os.Handler;
 import android.support.annotation.NonNull;
-import com.google.common.collect.Lists;
 import testtask.funda.com.fundatesttask.R;
-import testtask.funda.com.fundatesttask.data.model.QueryResponse;
+import testtask.funda.com.fundatesttask.data.model.FundaApiQueryResponse;
 import testtask.funda.com.fundatesttask.data.source.MakelaarsDataSource;
 import testtask.funda.com.fundatesttask.utils.GsonUtils;
 import testtask.funda.com.fundatesttask.utils.TextUtils;
@@ -42,7 +41,7 @@ public class FakeMakelaarsDataSource implements MakelaarsDataSource {
 			public void run() {
 				// Read the data from local file for test purposes not to spam server with requests for testing
 				String json = TextUtils.readRawTextFile(_context, R.raw.mock_reponse);
-				QueryResponse response = GsonUtils.createGson().fromJson(json, QueryResponse.class);
+				FundaApiQueryResponse response = GsonUtils.parseResponse(json);
 				callback.onObjectsLoaded(response.getObjectsForSale());
 			}
 		}, SERVICE_LATENCY_IN_MILLIS);

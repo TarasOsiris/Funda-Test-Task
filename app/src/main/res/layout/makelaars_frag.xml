@@ -22,9 +22,12 @@
 		android:id="@+id/makelaars_list_loading_indicator"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
-		android:indeterminate="true"
 		android:visibility="gone"
-		tools:visibility="gone" />
+		tools:visibility="visible"
+		style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+		android:max="100"
+		android:progress="55"
+		android:indeterminate="false" />
 
 	<ListView
 		android:id="@+id/makelaars_list"

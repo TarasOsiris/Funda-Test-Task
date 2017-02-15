@@ -8,23 +8,10 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 import testtask.funda.com.fundatesttask.Injection;
 import testtask.funda.com.fundatesttask.R;
-import testtask.funda.com.fundatesttask.data.source.remote.FundaApiRequestBuilder;
-import testtask.funda.com.fundatesttask.data.model.ObjectForSale;
-import testtask.funda.com.fundatesttask.data.model.QueryResponse;
 import testtask.funda.com.fundatesttask.utils.ActivityUtils;
-
-import java.io.IOException;
 
 public class MakelaarsActivity extends AppCompatActivity {
 

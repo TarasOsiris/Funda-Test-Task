@@ -2,6 +2,7 @@ package testtask.funda.com.fundatesttask.makelaars;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import testtask.funda.com.fundatesttask.R;
 import testtask.funda.com.fundatesttask.data.model.RealEstateAgent;
+import testtask.funda.com.fundatesttask.data.model.RealEstateAgentListViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +44,7 @@ public class MakelaarsFragment extends Fragment implements MakelaarsContract.Vie
 	@Override
 	public void onCreate(@Nullable Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		_listAdapter = new MakelaarsAdapter(new ArrayList<RealEstateAgent>(0));
+		_listAdapter = new MakelaarsAdapter(new ArrayList<RealEstateAgentListViewModel>(0));
 	}
 
 	@Nullable
@@ -92,13 +94,23 @@ public class MakelaarsFragment extends Fragment implements MakelaarsContract.Vie
 	}
 
 	@Override
-	public void setLoadingProgress(int progress) {
+	public void setLoadingProgress(final int current, final int total) {
+		if (getView() == null) {
+			return;
+		}
 
+		getView().post(new Runnable() {
+			@Override
+			public void run() {
+				_loadingIndicator.setMax(total);
+				_loadingIndicator.setProgress(current);
+			}
+		});
 	}
 
 	@Override
 	public void showLoadingSalesAgentsError() {
-		// TODO Show error
+		Snackbar.make(getView(), "Failed loading data", Snackbar.LENGTH_LONG).show();
 	}
 
 	@Override
@@ -112,7 +124,7 @@ public class MakelaarsFragment extends Fragment implements MakelaarsContract.Vie
 	}
 
 	@Override
-	public void showTopAgents(List<RealEstateAgent> topAgentsToShow) {
+	public void showTopAgents(List<RealEstateAgentListViewModel> topAgentsToShow) {
 		_noItemsTextView.setVisibility(View.GONE);
 		_listAdapter.replaceData(topAgentsToShow);
 	}
@@ -121,18 +133,18 @@ public class MakelaarsFragment extends Fragment implements MakelaarsContract.Vie
 
 	private static class MakelaarsAdapter extends BaseAdapter {
 
-		private List<RealEstateAgent> _realEstateAgents;
+		private List<RealEstateAgentListViewModel> _realEstateAgents;
 
-		MakelaarsAdapter(List<RealEstateAgent> realEstateAgents) {
+		MakelaarsAdapter(List<RealEstateAgentListViewModel> realEstateAgents) {
 			setList(realEstateAgents);
 		}
 
-		void replaceData(List<RealEstateAgent> realEstateAgents) {
+		void replaceData(List<RealEstateAgentListViewModel> realEstateAgents) {
 			setList(realEstateAgents);
 			notifyDataSetChanged();
 		}
 
-		private void setList(List<RealEstateAgent> realEstateAgents) {
+		private void setList(List<RealEstateAgentListViewModel> realEstateAgents) {
 			_realEstateAgents = checkNotNull(realEstateAgents);
 		}
 
@@ -142,7 +154,7 @@ public class MakelaarsFragment extends Fragment implements MakelaarsContract.Vie
 		}
 
 		@Override
-		public RealEstateAgent getItem(int i) {
+		public RealEstateAgentListViewModel getItem(int i) {
 			return _realEstateAgents.get(i);
 		}
 
@@ -160,10 +172,10 @@ public class MakelaarsFragment extends Fragment implements MakelaarsContract.Vie
 				rowView = inflater.inflate(R.layout.real_estate_agent_list_item, viewGroup, false);
 			}
 
-			RealEstateAgent agent = getItem(i);
+			RealEstateAgentListViewModel agent = getItem(i);
 
 			TextView titleTV = (TextView) rowView.findViewById(R.id.title);
-			titleTV.setText(agent.getRealEstateAgentName());
+			titleTV.setText(agent.getAgent().getRealEstateAgentName());
 
 			return rowView;
 		}

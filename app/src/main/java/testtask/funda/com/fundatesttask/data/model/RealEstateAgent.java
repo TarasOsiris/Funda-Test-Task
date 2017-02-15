@@ -6,7 +6,7 @@ package testtask.funda.com.fundatesttask.data.model;
 
 public class RealEstateAgent {
 
-	public RealEstateAgent(int id, String name) {
+	RealEstateAgent(int id, String name) {
 		_realEstateAgentId = id;
 		_realEstateAgentName = name;
 	}
@@ -18,7 +18,7 @@ public class RealEstateAgent {
 		return _realEstateAgentName;
 	}
 
-	public int getRealEstateAgentId() {
+	public int getId() {
 		return _realEstateAgentId;
 	}
 }

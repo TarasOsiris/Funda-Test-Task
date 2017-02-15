@@ -13,7 +13,7 @@ public interface MakelaarsDataSource {
 	interface LoadObjectsForSaleCallback {
 		void onObjectsLoaded(List<ObjectForSale> objectForSale);
 
-		void onProgressChanged(int progress);
+		void onProgressChanged(int current, int total);
 
 		void onError();
 	}

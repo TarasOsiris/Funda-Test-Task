@@ -14,7 +14,7 @@ public class PagingInfo {
 	private int _totalPages;
 
 	@SerializedName("HuidigePagina")
-	private int _currentPage;
+	private int _currentPageNumber;
 
 	@SerializedName("VolgendeUrl")
 	private String _nextUrl;
@@ -27,8 +27,8 @@ public class PagingInfo {
 		return _nextUrl;
 	}
 
-	public int getCurrentPage() {
-		return _currentPage;
+	public int getCurrentPageNumber() {
+		return _currentPageNumber;
 	}
 
 	public int getTotalPages() {
